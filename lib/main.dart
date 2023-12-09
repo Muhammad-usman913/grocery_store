@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_store/consts/theme_data.dart';
 import 'package:grocery_store/provider/dark_theme_provider.dart';
+import 'package:grocery_store/screens/btm_bar.dart';
 import 'package:grocery_store/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) {
-    runApp(new MyApp());
+    runApp(MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) =>DarkThemeProvider()),
+        ],
+        child: new MyApp()));
   });
 }
 
@@ -20,37 +25,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  DarkThemeProvider themeChangeProvider = DarkThemeProvider();
 
- void getCurrentAppTheme()async{
-   bool value = await themeChangeProvider.darkThemePrefs.getDarkTheme();
-   themeChangeProvider.setDarkTheme(value);
- }
  @override
   void initState() {
    getCurrentAppTheme();
-
    super.initState();
   }
-
-
+ void getCurrentAppTheme()async{
+   DarkThemeProvider darkThemeProvider = Provider.of<DarkThemeProvider>(context,listen: false);
+   bool value = await darkThemeProvider.darkThemePrefs.getDarkTheme();
+   darkThemeProvider.setDarkTheme(value);
+ }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) =>DarkThemeProvider()),
-      ],
-      child: Consumer<DarkThemeProvider>(
+    return Consumer<DarkThemeProvider>(
         builder: (context,themeProvider,child){
           return MaterialApp(
             title: 'Flutter Demo',
             theme: Style.themeData(themeProvider.getDarkTheme, context),
-            home: HomeScreen(),
+            home: BottomBarScreen(),
           );
         }
-      ),
     );
   }
 }
