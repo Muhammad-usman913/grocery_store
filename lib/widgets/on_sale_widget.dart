@@ -1,9 +1,11 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_store/widgets/price_widget.dart';
 import 'package:grocery_store/widgets/text_widget.dart';
 
 import '../services/utils.dart';
+import 'heart_btn.dart';
 
 class OnSaleWidget extends StatefulWidget {
   const OnSaleWidget({Key? key}) : super(key: key);
@@ -37,11 +39,21 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                Row(
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-                   Image.network(
-                     'https://freepngimg.com/thumb/apricot/133548-apricot-fruit-slice-hd-image-free.png',
-                     height: size.width * 0.22,
-                     fit: BoxFit.fill,
+
+                   FancyShimmerImage(
+                     imageUrl: 'https://freepngimg.com/thumb/apricot/133548-apricot-fruit-slice-hd-image-free.png',
+                         height: size.width * 0.22,
+                     width: size.width * 0.22,
+                         boxFit: BoxFit.fill,
+
                    ),
+                   // widget(
+                   //   child: Image.network(
+                   //     'https://freepngimg.com/thumb/apricot/133548-apricot-fruit-slice-hd-image-free.png',
+                   //     height: size.width * 0.22,
+                   //     fit: BoxFit.fill,
+                   //   ),
+                   // ),
                    Column(
                      children: [
                        TextWidget(text: '1kg', color: color, textSize: 22,isTitle: true,),
@@ -56,21 +68,19 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                                  size: 22,
                                  color: color,
                                )),
-                           GestureDetector(
-                               onTap: (){
-
-                               },
-                               child: Icon(IconlyLight.heart ,
-                                 size: 22,
-                                 color: color,
-                               )),
+                           HeartBTN()
                          ],
                        ),
 
                      ],
                    )
                ],),
-              const  PriceWidget(),
+                PriceWidget(
+                    isOnsale: true,
+                    price: 5.9,
+                    salePrice: 2.9,
+                    textPrice: '1',
+                ),
               const  SizedBox(height: 5,),
                 TextWidget(text: "Product Title", color: color, textSize: 16,isTitle: true ,),
                 const  SizedBox(height: 5,),
